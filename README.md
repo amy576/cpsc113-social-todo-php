@@ -17,4 +17,4 @@ Then, restart the Apache server and the PHPMyAdmin database:
   apache50 start
   mysql50 start
 ```
-This should be all you need to start the app!
+Lastly, go to PHPMyAdmin and use the code found in db.sql to set up the database.
