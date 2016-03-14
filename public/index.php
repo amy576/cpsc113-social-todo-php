@@ -3,32 +3,27 @@
     // configuration
     require("../includes/config.php"); 
 
-    // checks portfolios and users database for what we need
-    $rows = CS50::query("SELECT symbol, shares FROM portfolios WHERE user_id = ?", $_SESSION["id"]);
+    // checks users database for what we need
+    $userinfo = CS50::query("SELECT name, email FROM users WHERE id = ?", $_SESSION["id"]);
+    
+    // checks tasks database for tasks
+    $rows = CS50::query("SELECT id, title, description, is_complete FROM tasks WHERE owner_id = ? OR collaborator_1 = ? OR collaborator_2 = ? OR collaborator_3 = ?", $_SESSION["id"], $userinfo[0]["email"], $userinfo[0]["email"], $userinfo[0]["email"]);
     $positions = [];
+    
     foreach ($rows as $row)
     {
-        // queries Yahoo Finance
-        $stock = lookup($row["symbol"]);
-        
-        if ($stock !== false)
-        {
-            $positions[] = [
-                "name" => $stock["name"],
-                "price" => $stock["price"],
-                "shares" => $row["shares"],
-                "symbol" => $row["symbol"],
-                "total" => $row["shares"]*$stock["price"]
+        $positions[] = [
+                "task_id" => $row["id"],
+                "task_title" => $row["title"],
+                "description" => $row["description"],
+                "is_complete" => $row["is_complete"]
             ];
-        }
     }
 
-    // checks users database for cash
-    $userinfo = CS50::query("SELECT username, cash FROM users WHERE id = ?", $_SESSION["id"]);
-    $cash = $userinfo[0]["cash"];
-    $username = $userinfo[0]["username"];
+    // checks users database for name
+    $name = $userinfo[0]["name"];
     
-    // render portfolio
-    render("portfolio.php", ["rows" => $positions, "title" => "Portfolio", "username" => $username, "cash" => $cash]);
+    // render dashboard
+    render("dashboard.php", ["rows" => $positions, "title" => "Dashboard", "name" => $name]);
 
 ?>

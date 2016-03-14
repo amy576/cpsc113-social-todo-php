@@ -13,10 +13,14 @@
     // else if user reached page via POST (as by submitting a form via POST)
     else if ($_SERVER["REQUEST_METHOD"] == "POST")
     {
-        // if $_POST["username"] or $_POST["password"] is empty
-        if (empty($_POST["username"]))
+        // if name, email, or password is empty
+        if (empty($_POST["name"]))
         {
-            apologize("You must provide a username");
+            apologize("You must provide a name");
+        }
+        else if (empty($_POST["email"]))
+        {
+            apologize("You must provide an email");
         }
         else if (empty($_POST["password"]))
         {
@@ -29,13 +33,13 @@
             apologize("Your passwords do not match");
         }
         
-        // check if the username already exists
-        $check = CS50::query("INSERT IGNORE INTO users (username, hash, cash) VALUES(?, ?, 10000.0000)", $_POST["username"], password_hash($_POST["password"], PASSWORD_DEFAULT));
+        // check if the user already exists
+        $check = CS50::query("INSERT IGNORE INTO users (name, email, password) VALUES(?, ?, ?)", $_POST["name"], $_POST["email"], password_hash($_POST["password"], PASSWORD_DEFAULT));
         
         // query will return 0 if your INSERT fails
         if ($check == 0)
         {
-            apologize("Sorry, that username already exists. Please try again");
+            apologize("Sorry, that user already exists. Please try again");
             
         }
         
