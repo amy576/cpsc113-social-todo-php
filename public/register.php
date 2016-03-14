@@ -26,6 +26,18 @@
         {
             apologize("You must provide a password");
         }
+        else if (strlen($_POST["name"]) > 50)
+        {
+        apologize("Your name is too long");
+        }
+        else if (strlen($_POST["email"]) > 50)
+        {
+        apologize("Your email is too long");
+        }
+        else if (strlen($_POST["password"]) > 50)
+        {
+        apologize("Your password is too long");
+        }
         
         // if $_POST["password"] does not equal $_POST["confirmation"]
         else if ($_POST["confirmation"] != $_POST["password"])
