@@ -8,13 +8,13 @@ However, because I was unable to figure out how to start the server outside of t
 
 ## How to run this
 First, make sure that all servers are stopped by running
-
+```
   killall -9 server
   apache50 stop
-
+```
 Then, restart the Apache server and the PHPMyAdmin database:
-
+```
   apache50 start
   mysql50 start
-
+```
 This should be all you need to start the app!
